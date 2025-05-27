@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Species Classifier - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">BIRD CLASSIFIER</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#">About</a>
+                <a href="#">Projects</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="nav-buttons">
+                <a href="/login" class="login">Login</a>
+                <a href="/register" class="register">Register</a> <!-- Changed from "Be a Partner" -->
+            </div>
+        </nav>
+        <div class="login-content">
+            <h2>Login</h2>
+            {% if error %}
+                <p style="color: #ff6b6b;">{{ error }}</p>
+            {% endif %}
+            <form class="login-form" method="POST" action="{{ url_for('login') }}">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Classifier - Blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <style>
+        .content {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .content h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: slideIn 1s ease-out;
+        }
+        .content .post {
+            font-size: 1.1em;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">BIRD CLASSIFIER</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="{% if request.path == url_for('home') %}active{% endif %}">Home</a>
+                <a href="{{ url_for('about') }}" class="{% if request.path == url_for('about') %}active{% endif %}">About</a>
+                <a href="{{ url_for('projects') }}" class="{% if request.path == url_for('projects') %}active{% endif %}">Projects</a>
+                <a href="{{ url_for('blog') }}" class="{% if request.path == url_for('blog') %}active{% endif %}">Blog</a>
+                <a href="{{ url_for('contact') }}" class="{% if request.path == url_for('contact') %}active{% endif %}">Contact</a>
+            </div>
+            <div class="nav-buttons">
+                <a href="{{ url_for('login') }}" class="login">Login</a>
+                <a href="{{ url_for('register') }}" class="register">Register</a>
+            </div>
+        </nav>
+        <div class="content">
+            <h1>Blog</h1>
+            <div class="post">
+                <h2>Introduction to Bird Classification</h2>
+                <p>Published on May 10, 2023 - Learn how our Bird Species Classifier uses deep learning to identify over 100 bird species with high accuracy. Perfect for birdwatchers and researchers alike!</p>
+            </div>
+            <div class="post">
+                <h2>Tips for Better Birdwatching</h2>
+                <p>Published on Oct 5, 2024 - Discover the best times and locations for birdwatching, along with how our tool can enhance your experience in the field.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

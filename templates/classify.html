@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Species Classifier - Classify</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/classify.css') }}">
+    <style>
+        /* Additional styles for webcam section to match existing aesthetic */
+        #webcam {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            margin: 10px 0;
+        }
+        .webcam-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .webcam-buttons button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .webcam-buttons button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .webcam-buttons button:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+        #webcam-result, #error {
+            margin-top: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            color: #333;
+        }
+        #error {
+            color: #ff6b6b;
+        }
+        #canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="classify-content">
+            <h1>Bird Species Classifier</h1>
+
+            <!-- Webcam Section -->
+            <h2>Webcam Classification</h2>
+            <video id="webcam" autoplay playsinline width="640" height="480"></video>
+            <canvas id="canvas"></canvas>
+            <div class="webcam-buttons">
+                <button id="startWebcam">Start Webcam</button>
+                <button id="stopWebcam" disabled>Stop Webcam</button>
+            </div>
+            <div id="webcam-result"></div>
+            <div id="error"></div>
+
+            <!-- Upload Section -->
+            <h2>Upload Image</h2>
+            <form id="upload-form" enctype="multipart/form-data">
+                <label for="file-input" class="custom-file-upload">Choose Image</label>
+                <input type="file" name="file" id="file-input" accept=".jpg,.jpeg,.png" required>
+                <button type="submit">Upload and Predict</button>
+            </form>
+            <div id="result"></div>
+            <img id="uploaded-image" src="" alt="" style="display: none;">
+            
+            <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+        </div>
+    </div>
+
+    <script>
+        // Webcam handling
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const startWebcamBtn = document.getElementById('startWebcam');
+        const stopWebcamBtn = document.getElementById('stopWebcam');
+        const webcamResult = document.getElementById('webcam-result');
+        const errorDiv = document.getElementById('error');
+        let stream = null;
+        let predicting = false;
+
+        // Start webcam
+        startWebcamBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                startWebcamBtn.disabled = true;
+                stopWebcamBtn.disabled = false;
+                predicting = true;
+                errorDiv.textContent = '';
+                predictFromWebcam();
+            } catch (err) {
+                errorDiv.textContent = 'Error accessing webcam: ' + err.message;
+            }
+        });
+
+        // Stop webcam
+        stopWebcamBtn.addEventListener('click', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                startWebcamBtn.disabled = false;
+                stopWebcamBtn.disabled = true;
+                predicting = false;
+                webcamResult.textContent = '';
+                errorDiv.textContent = '';
+            }
+        });
+
+        // Predict from webcam
+        async function predictFromWebcam() {
+            if (!predicting) return;
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/jpeg');
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: imageData })
+                });
+                const data = await response.json();
+
+                if (data.error) {
+                    errorDiv.textContent = data.error;
+                    webcamResult.innerHTML = '';
+                } else {
+                    webcamResult.innerHTML = `
+                        <p>Predicted Species: <strong>${data.species}</strong></p>
+                        <p>Confidence: <strong>${(data.confidence * 100).toFixed(2)}%</strong></p>
+                    `;
+                    errorDiv.textContent = '';
+                }
+            } catch (err) {
+                errorDiv.textContent = 'Error predicting: ' + err.message;
+                webcamResult.innerHTML = '';
+            }
+
+            setTimeout(predictFromWebcam, 1000); // Predict every second
+        }
+
+        // File upload handling
+        document.getElementById('upload-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            const resultDiv = document.getElementById('result');
+            const uploadedImage = document.getElementById('uploaded-image');
+            const errorDiv = document.getElementById('error');
+
+            if (result.error) {
+                resultDiv.innerHTML = `<p style="color: #ff6b6b;">Error: ${result.error}</p>`;
+                uploadedImage.style.display = 'none';
+                errorDiv.textContent = '';
+            } else {
+                resultDiv.innerHTML = `
+                    <p>Predicted Species: <strong>${result.species}</strong></p>
+                    <p>Confidence: <strong>${(result.confidence * 100).toFixed(2)}%</strong></p>
+                `;
+                uploadedImage.src = result.image_path;
+                uploadedImage.style.display = 'block';
+                errorDiv.textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>

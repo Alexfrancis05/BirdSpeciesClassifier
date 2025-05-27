@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Classifier - Contact</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <style>
+        .content {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .content h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: slideIn 1s ease-out;
+        }
+        .content p {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+        .content form {
+            margin-top: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .content input, .content textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+        }
+        .content button {
+            padding: 12px 30px;
+            background: #00cc00;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .content button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">BIRD CLASSIFIER</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="{% if request.path == url_for('home') %}active{% endif %}">Home</a>
+                <a href="{{ url_for('about') }}" class="{% if request.path == url_for('about') %}active{% endif %}">About</a>
+                <a href="{{ url_for('projects') }}" class="{% if request.path == url_for('projects') %}active{% endif %}">Projects</a>
+                <a href="{{ url_for('blog') }}" class="{% if request.path == url_for('blog') %}active{% endif %}">Blog</a>
+                <a href="{{ url_for('contact') }}" class="{% if request.path == url_for('contact') %}active{% endif %}">Contact</a>
+            </div>
+            <div class="nav-buttons">
+                <a href="{{ url_for('login') }}" class="login">Login</a>
+                <a href="{{ url_for('register') }}" class="register">Register</a>
+            </div>
+        </nav>
+        <div class="content">
+            <h1>Contact Us</h1>
+            <p>Have questions or feedback? Reach out to us!</p>
+            <form>
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <p>Email: projectbirds12@gmail.com</p>
+            <p>Phone: 91+ 9159737115</p>
+        </div>
+    </div>
+</body>
+</html>

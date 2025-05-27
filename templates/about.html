@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Classifier - About</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <style>
+        .content {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .content h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: slideIn 1s ease-out;
+        }
+        .content p {
+            font-size: 1.1em;
+            margin: 10px 0;
+            line-height: 1.6;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">BIRD CLASSIFIER</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="{% if request.path == url_for('home') %}active{% endif %}">Home</a>
+                <a href="{{ url_for('about') }}" class="{% if request.path == url_for('about') %}active{% endif %}">About</a>
+                <a href="{{ url_for('projects') }}" class="{% if request.path == url_for('projects') %}active{% endif %}">Projects</a>
+                <a href="{{ url_for('blog') }}" class="{% if request.path == url_for('blog') %}active{% endif %}">Blog</a>
+                <a href="{{ url_for('contact') }}" class="{% if request.path == url_for('contact') %}active{% endif %}">Contact</a>
+            </div>
+            <div class="nav-buttons">
+                <a href="{{ url_for('login') }}" class="login">Login</a>
+                <a href="{{ url_for('register') }}" class="register">Register</a>
+            </div>
+        </nav>
+        <div class="content">
+            <h1>About Us</h1>
+            <p>Welcome to the Bird Species Classifier, a project dedicated to helping bird enthusiasts and researchers identify bird species using advanced machine learning techniques. Our mission is to make birdwatching more accessible and educational by providing an easy-to-use tool that leverages a deep learning model trained on a diverse dataset of bird images.</p>
+            <p>Developed by a team passionate about nature and technology, this application uses a convolutional neural network to classify images of birds with high accuracy. Whether you're a beginner or an expert, our classifier aims to enhance your experience in the wild.</p>
+            <p>Stay tuned for updates and new features as we continue to improve our platform!</p>
+        </div>
+    </div>
+</body>
+</html>

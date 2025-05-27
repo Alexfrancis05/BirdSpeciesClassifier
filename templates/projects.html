@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Classifier - Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <style>
+        .content {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .content h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: slideIn 1s ease-out;
+        }
+        .content ul {
+            list-style: none;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+        .content ul li {
+            font-size: 1.1em;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">BIRD CLASSIFIER</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="{% if request.path == url_for('home') %}active{% endif %}">Home</a>
+                <a href="{{ url_for('about') }}" class="{% if request.path == url_for('about') %}active{% endif %}">About</a>
+                <a href="{{ url_for('projects') }}" class="{% if request.path == url_for('projects') %}active{% endif %}">Projects</a>
+                <a href="{{ url_for('blog') }}" class="{% if request.path == url_for('blog') %}active{% endif %}">Blog</a>
+                <a href="{{ url_for('contact') }}" class="{% if request.path == url_for('contact') %}active{% endif %}">Contact</a>
+            </div>
+            <div class="nav-buttons">
+                <a href="{{ url_for('login') }}" class="login">Login</a>
+                <a href="{{ url_for('register') }}" class="register">Register</a>
+            </div>
+        </nav>
+        <div class="content">
+            <h1>Our Future Projects</h1>
+            <ul>
+                <li><strong>Bird Species Classifier</strong> - A machine learning-based tool to identify bird species from images and webcam feeds, enhancing birdwatching experiences.</li>
+                <li><strong>Wildlife Tracker</strong> - (Future Project) A system to monitor and log wildlife sightings using AI and GPS technology.</li>
+                <li><strong>Nature Sound Analyzer</strong> - (Future Project) An application to classify bird calls and other natural sounds for ecological research.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
